@@ -5,7 +5,7 @@ App de rastreamento de localização em tempo (quase) real para Android e iOS, f
 ## O que o app faz
 
 - **Captura a localização do dispositivo** em intervalos regulares (a cada 30 segundos no Android).
-- **Envia as posições para uma API** associadas a um identificador de oportunidade.
+- **Envia as posições para uma API.**
 - **Funciona em segundo plano** no Android via serviço em foreground (com notificação).
 - **Suporta uso offline**: localizações são guardadas em cache e enviadas quando a rede voltar (WorkManager).
 - Na tela, o usuário pode **solicitar permissão de localização**, **iniciar** e **parar** o rastreamento.
