@@ -53,6 +53,13 @@ class LocationTrackingService : Service() {
     private var isTracking = false
     private var trackingId: String? = null
 
+    /**
+     * Inicializa dependências do serviço.
+     *
+     * Aqui:
+     * - Inicializa o `FusedLocationProviderClient`.
+     * - Cria o canal de notificação (obrigatório para rodar em foreground no Android).
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
@@ -60,6 +67,13 @@ class LocationTrackingService : Service() {
         createNotificationChannel()
     }
 
+    /**
+     * Entry point do `Service`.
+     *
+     * Processa as ações suportadas via `Intent`:
+     * - `ACTION_START`: inicia o rastreamento para um `trackingId`.
+     * - `ACTION_STOP`: interrompe o rastreamento e encerra o serviço.
+     */
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
@@ -81,14 +95,31 @@ class LocationTrackingService : Service() {
         return START_STICKY
     }
 
+    /**
+     * Este serviço não oferece binding (é usado via startForegroundService/startService).
+     */
     override fun onBind(intent: Intent?): IBinder? = null
 
+    /**
+     * Cleanup ao destruir o serviço.
+     *
+     * Para atualizações de localização e cancela o escopo de coroutines para evitar leaks.
+     */
     override fun onDestroy() {
         super.onDestroy()
         stopLocationUpdates()
         serviceScope.cancel()
     }
 
+    /**
+     * Inicia o rastreamento para o `trackingId` informado.
+     *
+     * Responsabilidades:
+     * - Atualizar estado interno (`isTracking`/`trackingId`).
+     * - Configurar o callback de localização.
+     * - Subir o serviço para foreground com notificação.
+     * - Iniciar atualizações periódicas e tentar enviar a última localização imediatamente.
+     */
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     @SuppressLint("ForegroundServiceType")
     private fun startTracking(id: String) {
@@ -118,6 +149,9 @@ class LocationTrackingService : Service() {
         isTracking = true
     }
 
+    /**
+     * Interrompe o rastreamento em andamento e encerra o serviço.
+     */
     private fun stopTracking() {
         stopLocationUpdates()
         isTracking = false
@@ -126,6 +160,11 @@ class LocationTrackingService : Service() {
         stopSelf()
     }
 
+    /**
+     * Configura o `LocationCallback` que recebe as localizações periódicas.
+     *
+     * Quando uma nova localização chega, delega para `sendLocationToApi()`.
+     */
     private fun setupLocationCallback(id: String) {
         locationCallback =
             object : LocationCallback() {
@@ -141,6 +180,11 @@ class LocationTrackingService : Service() {
             }
     }
 
+    /**
+     * Faz um request pontual para obter a última localização conhecida e tenta enviar imediatamente.
+     *
+     * Isso ajuda a não esperar o primeiro tick do `requestLocationUpdates()`.
+     */
     @SuppressLint("MissingPermission")
     private fun requestLastLocationAndSend(trackingId: String) {
         fusedLocationClient.lastLocation
@@ -156,6 +200,13 @@ class LocationTrackingService : Service() {
             }
     }
 
+    /**
+     * Converte o `Location` do Android em `LocationData` e envia para o repositório.
+     *
+     * Observação:
+     * - O repositório decide se envia para a API ou se coloca em cache (offline/erro), retornando
+     *   um `LocationSendResponse`.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun sendLocationToApi(
         location: Location,
@@ -201,6 +252,13 @@ class LocationTrackingService : Service() {
         }
     }
 
+    /**
+     * Inicia a coleta de localização em intervalos fixos.
+     *
+     * Regras:
+     * - Valida permissão antes de registrar o callback.
+     * - Em caso de `SecurityException`, encerra o serviço.
+     */
     @RequiresPermission(anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     private fun startLocationUpdates() {
         if (!hasLocationPermission()) {
@@ -231,17 +289,26 @@ class LocationTrackingService : Service() {
         }
     }
 
+    /**
+     * Para as atualizações de localização registradas no `FusedLocationProviderClient`.
+     */
     private fun stopLocationUpdates() {
         Log.d(TAG, "Parando atualizações de localização")
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
+    /**
+     * Verifica se a permissão de localização fina foi concedida.
+     */
     private fun hasLocationPermission(): Boolean =
         ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION,
         ) == PackageManager.PERMISSION_GRANTED
 
+    /**
+     * Cria o canal de notificação usado pelo foreground service (Android O+).
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         val channel =
@@ -258,6 +325,11 @@ class LocationTrackingService : Service() {
         notificationManager.createNotificationChannel(channel)
     }
 
+    /**
+     * Monta a notificação do serviço.
+     *
+     * Se houver pendências em cache, exibe a contagem no texto.
+     */
     private fun createNotification(pendingCount: Int = 0): Notification {
         val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
         val pendingIntent =
@@ -286,6 +358,11 @@ class LocationTrackingService : Service() {
             .build()
     }
 
+    /**
+     * Atualiza a notificação do serviço com a quantidade atual de localizações pendentes.
+     *
+     * Usado principalmente quando o envio foi cacheado (offline), para dar feedback visual.
+     */
     private fun updateNotificationWithPendingCount() {
         val pendingCount = repository.getPendingLocationsCount()
         val notification = createNotification(pendingCount)
@@ -305,6 +382,11 @@ class LocationTrackingService : Service() {
         private const val LOCATION_INTERVAL_MS = 30_000L
         private const val TAG = "LocationTracking"
 
+        /**
+         * Helper para iniciar o serviço em foreground.
+         *
+         * Deve ser chamado pela UI/camada de controle quando o rastreamento precisa começar.
+         */
         fun start(
             context: Context,
             id: String,
@@ -317,6 +399,9 @@ class LocationTrackingService : Service() {
             ContextCompat.startForegroundService(context, intent)
         }
 
+        /**
+         * Helper para solicitar a parada do serviço.
+         */
         fun stop(context: Context) {
             val intent =
                 Intent(context, LocationTrackingService::class.java).apply {
