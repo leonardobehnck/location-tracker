@@ -3,16 +3,15 @@
 App de rastreamento de localização em tempo (quase) real para Android e iOS, feito com **Compose Multiplatform**.
 
 ## Screenshots
+### Screen
+<p float="left">
+  <img src="./screenshots/Screen.png" width="45%" />
+</p>
 
 ### Android / iOS
 <p float="left">
   <img src="./screenshots/Android.png" width="45%" />
   <img src="./screenshots/iOS.png" width="45%" />
-</p>
-
-### Screen
-<p float="left">
-  <img src="./screenshots/Screen.png" width="45%" />
 </p>
 
 ### Logs
