@@ -6,6 +6,10 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.location_tracker.location.LocationTrackingManager
 import org.koin.compose.koinInject
@@ -30,7 +34,7 @@ fun LocationTracker(
     requestContentHolder: RequestContentHolder = koinInject(),
 ) {
     val context = LocalContext.current
-    val hasPermission = locationTrackingManager.hasLocationPermission()
+    var hasPermission by rememberSaveable { mutableStateOf(locationTrackingManager.hasLocationPermission()) }
 
     val permissionLauncher =
         rememberLauncherForActivityResult(
@@ -40,9 +44,11 @@ fun LocationTracker(
             if (allGranted) {
                 Log.d(TAG, "Permissão de localização concedida")
                 Toast.makeText(context, "Permissão concedida", Toast.LENGTH_SHORT).show()
+                hasPermission = true
             } else {
                 Log.w(TAG, "Permissão de localização negada")
                 Toast.makeText(context, "Permissão de localização negada", Toast.LENGTH_SHORT).show()
+                hasPermission = locationTrackingManager.hasLocationPermission()
             }
         }
 
