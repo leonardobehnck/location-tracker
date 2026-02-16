@@ -15,13 +15,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-private const val TAG = "LocationTracking"
-
 /**
  * Classe que gerencia o serviço de rastreamento de localização.
  * Orquestra o serviço de rastreamento de localização.
  * Fornece uma API simples para iniciar/parar o rastreamento e monitora a conectividade da rede.
  */
+
+private const val TAG = "LocationTracking"
+
 class LocationTrackingManager(
     private val context: Context,
     private val repository: LocationTrackingRepository,
