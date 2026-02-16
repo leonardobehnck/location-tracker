@@ -16,7 +16,7 @@ App de rastreamento de localização em tempo (quase) real para Android e iOS, f
 
 ### Logs
 <p float="left">
-  <img src="./screenshots/Logs.png" width="45%" />
+  <img src="./screenshots/Logs.png" width="90%" />
 </p>
 
 
