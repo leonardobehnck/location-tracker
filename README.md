@@ -109,14 +109,6 @@ Exemplo de payload enviado:
       "accuracy": 5.0,
       "speed": 0.0,
       "altitude": 5.0,
-      "trackedAt": "2026-02-16T21:01:14.993256Z"
-    },
-    {
-      "latitude": 55.5555555,
-      "longitude": -55.5555,
-      "accuracy": 5.0,
-      "speed": 0.0,
-      "altitude": 5.0,
       "trackedAt": "2026-02-16T21:02:20.230281Z"
     }
   ]
