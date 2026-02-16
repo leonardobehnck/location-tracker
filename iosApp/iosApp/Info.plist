@@ -8,5 +8,9 @@
 	<string>O app precisa da sua localização para rastreamento durante o uso.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>O app precisa da sua localização para rastreamento em primeiro e segundo plano.</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.location_tracker.sync</string>
+	</array>
 </dict>
 </plist>
