@@ -7,7 +7,10 @@ App de rastreamento de localização em tempo (quase) real para Android e iOS, f
 ### Android
 
 ![Android](./screenshots/Android.png)
+![iOS](./screenshots/iOS.png)
 
+## Screen
+![Screen](./screenshots/Screen.png)
 ### Logs
 
 ![Logs](./screenshots/Logs.png)
