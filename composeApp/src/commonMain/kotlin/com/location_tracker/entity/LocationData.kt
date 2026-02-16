@@ -1,5 +1,8 @@
 package com.location_tracker.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class LocationData(
     val id: String,
     val latitude: Double,
