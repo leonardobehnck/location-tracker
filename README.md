@@ -71,13 +71,13 @@ Abra a pasta [iosApp](./iosApp) no Xcode e rode o app no simulador ou dispositiv
 
 ---
 
-### Logs
-## Logcat
+## Logs
+### Logcat
 <p float="left">
   <img src="./screenshots/Logs.png" width="90%" />
 </p>
 
-## API
+### API
 
 Exemplo de payload enviado:
 
