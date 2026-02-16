@@ -14,12 +14,6 @@ App de rastreamento de localização em tempo (quase) real para Android e iOS, f
   <img src="./screenshots/iOS.png" width="45%" />
 </p>
 
-### Logs
-<p float="left">
-  <img src="./screenshots/Logs.png" width="90%" />
-</p>
-
-
 ## O que o app faz
 
 - **Captura a localização do dispositivo** em intervalos regulares.
@@ -77,17 +71,11 @@ Abra a pasta [iosApp](./iosApp) no Xcode e rode o app no simulador ou dispositiv
 
 ---
 
-## Logs
-
-Exemplo de log do envio para a API (headers + body):
-
-```text
-CONTENT HEADERS
-Content-Length: 1184
-Content-Type: application/json
-BODY Content-Type: application/json
-BODY START
-```
+### Logs
+## Logcat
+<p float="left">
+  <img src="./screenshots/Logs.png" width="90%" />
+</p>
 
 ## API
 
