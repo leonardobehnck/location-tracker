@@ -19,10 +19,6 @@ class LocationTrackingRepository(
     private val networkAvailability: NetworkAvailability,
     private val requestContentHolder: RequestContentHolder,
 ) {
-    fun cacheLocation(location: LocationData) {
-        locationCache.saveLocation(location)
-    }
-
     suspend fun sendLocation(location: LocationData): LocationSendResponse =
         withContext(Dispatchers.Default) {
             val request =

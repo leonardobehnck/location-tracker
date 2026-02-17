@@ -129,7 +129,7 @@ class LocationTrackingManager(
             try {
                 connectivityManager.unregisterNetworkCallback(callback)
             } catch (e: IllegalArgumentException) {
-                // Callback was not registered
+                Log.w(TAG, "NetworkCallback was not registered or already unregistered", e)
             }
             networkCallback = null
         }
