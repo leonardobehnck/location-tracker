@@ -24,11 +24,11 @@ import platform.Foundation.writeToURL
  * Objetivo:
  * - Garantir que pontos coletados enquanto o dispositivo estiver offline
  *   não sejam perdidos ao fechar o app.
- * - Permitir que a sincronização em background (ex.: `BGAppRefreshTask` no Swift) consiga ler as
+ * - Permitir que a sincronização em background (ex.: BGAppRefreshTask no Swift) consiga ler as
  *   pendências e tentar reenviar quando houver internet.
  *
  * Onde salva:
- * - Arquivo `pending_locations.json` dentro do diretório Documents.
+ * - Arquivo pending_locations.json dentro do diretório Documents.
  * - Se o diretório Documents não estiver disponível por algum motivo, usa o diretório temporário.
  *
  * Observações:

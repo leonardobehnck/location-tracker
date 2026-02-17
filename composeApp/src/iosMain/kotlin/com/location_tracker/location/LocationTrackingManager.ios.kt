@@ -24,13 +24,13 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 /**
- * Implementação iOS do rastreamento de localização usando Core Location (`CLLocationManager`).
+ * Implementação iOS do rastreamento de localização usando Core Location (CLLocationManager).
  *
  * Responsabilidades:
  * - Solicitar permissão de localização (quando necessário)
  * - Iniciar/parar a captura de localizações
- * - Converter `CLLocation` em `LocationData` (model comum do KMP)
- * - Enviar as localizações via `LocationTrackingRepository`
+ * - Converter CLLocation em LocationData (model comum do KMP)
+ * - Enviar as localizações via LocationTrackingRepository
  *
  * Observações:
  * - O envio pode falhar offline; o repositório decide cachear e sincronizar depois.
@@ -61,8 +61,8 @@ class LocationTrackingManager :
      *
      * Fluxo:
      * - Verifica permissão.
-     * - Se não tiver permissão, solicita e retorna `false`.
-     * - Caso tenha, guarda o `trackingId` e começa a receber updates via Core Location.
+     * - Se não tiver permissão, solicita e retorna false.
+     * - Caso tenha, guarda o trackingId e começa a receber updates via Core Location.
      */
     fun startTracking(trackingId: String): Boolean {
         if (!hasLocationPermission()) {
@@ -78,7 +78,7 @@ class LocationTrackingManager :
     /**
      * Para o rastreamento.
      *
-     * Interrompe updates do Core Location e limpa o `trackingId`.
+     * Interrompe updates do Core Location e limpa o trackingId.
      */
     fun stopTracking() {
         locationManager.stopUpdatingLocation()
@@ -154,8 +154,8 @@ class LocationTrackingManager :
      * Gera um ID único por amostra de localização.
      *
      * Importante:
-     * - Não reutilizar `trackingId` como ID da localização.
-     * - O cache remove localizações por `LocationData.id`, então ele precisa ser único.
+     * - Não reutilizar trackingId como ID da localização.
+     * - O cache remove localizações por LocationData.id, então ele precisa ser único.
      */
     @OptIn(ExperimentalUuidApi::class)
     private fun generateLocationId(): String = Uuid.random().toString()

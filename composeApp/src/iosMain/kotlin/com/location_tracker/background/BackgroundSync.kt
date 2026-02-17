@@ -11,14 +11,14 @@ import kotlinx.coroutines.launch
  * Ponto de entrada (Kotlin) para sincronização de localizações pendentes em background no iOS.
  *
  * Contexto:
- * - O iOS dispara tarefas de background via `BGAppRefreshTask` (lado Swift).
+ * - O iOS dispara tarefas de background via BGAppRefreshTask (lado Swift).
  * - O Swift precisa chamar uma API simples e “Swift-friendly”. Este objeto expõe essa API.
  *
  * Como funciona:
- * - Inicializa/acessa o Koin via `KoinInitializer.getKoin()`.
- * - Resolve o `LocationTrackingRepository`.
- * - Executa `syncPendingLocations()` em coroutine.
- * - Ao terminar, chama `onComplete` com a quantidade de localizações sincronizadas.
+ * - Inicializa/acessa o Koin via KoinInitializer.getKoin().
+ * - Resolve o LocationTrackingRepository.
+ * - Executa syncPendingLocations() em coroutine.
+ * - Ao terminar, chama onComplete com a quantidade de localizações sincronizadas.
  */
 object BackgroundSync {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -28,8 +28,8 @@ object BackgroundSync {
      *
      * Observações:
      * - A execução é assíncrona.
-     * - `onComplete` é chamado quando a sincronização termina (com sucesso ou retornando 0).
-     * - O repositório respeita o `NetworkAvailability` e o `LocationCache` configurados na DI.
+     * - onComplete é chamado quando a sincronização termina (com sucesso ou retornando 0).
+     * - O repositório respeita o NetworkAvailability e o LocationCache configurados na DI.
      */
     fun syncPendingLocations(onComplete: (syncedCount: Int) -> Unit) {
         val koin = KoinInitializer.getKoin()
